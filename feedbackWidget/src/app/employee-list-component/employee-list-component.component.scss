@@ -1,0 +1,27 @@
+#divWrapper {
+    border-radius: 25px, 25px, 25px, 25px;
+}
+
+.firstRow {
+    height:200px;
+    background: grey;
+    background:linear-gradient(rgb(216, 216, 216) 55%, #777 95%);
+}
+
+.secondRow {
+    height:100px;
+    background: grey;
+    background:linear-gradient(rgb(216, 216, 216) 55%, #777 95%);
+}
+
+.thirdRow {
+    height: 400px;
+    background: grey;
+    background:linear-gradient(rgb(216, 216, 216) 55%, #777 95%);
+}
+
+.firstRow, .secondRow, .thirdRow {
+    outline: #000;
+    outline-width: 0px;
+    outline-style: auto;
+}

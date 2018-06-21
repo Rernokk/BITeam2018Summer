@@ -1,0 +1,44 @@
+<mat-card>
+  <div id='divWrapper'>
+    <div style='background-color:#369;'>
+      <p>
+        employee-list-component
+      </p>
+      <div>
+        <input style='display:inline-block;' [(ngModel)]='login' placeholder='user'>
+      </div>
+      <div>
+        <input style='display:inline-block;' [(ngModel)]='password' placeholder='password'>
+      </div>
+      <p>
+        <button (click)="createAccount()"> Create Account </button>
+        <button (click)="loginAccount()"> Log In </button>
+        <button (click)="test()"> Test </button>
+      </p>
+    </div>
+
+    <div style='background-color: rgb(255, 20, 230);height:250px'>
+      <div style='width:50%;display:inline-block;'>
+        <div class='firstRow'>
+
+        </div>
+        <div class='secondRow'>
+          
+        </div>
+        <div class='thirdRow'>
+        </div>
+      </div>
+      <div style='width:50%;display:inline-block'>
+          <div class='firstRow'>
+    
+          </div>
+          <div class='secondRow'>
+            
+          </div>
+          <div class='thirdRow'>
+    
+          </div>
+        </div>
+    </div>
+  </div>
+</mat-card>
