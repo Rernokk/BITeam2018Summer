@@ -1,0 +1,20 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<mat-card *ngIf="employee">
+	<p><b>Hello {{employee.full_name}}</b></p>
+	<p>Title: {{employee.title}}</p>
+	<br/>
+	<p>Welcome back to {{employee.organization}}</p>
+	<p>widget mode: {{mode}}</p>
+	<p class="primary">some text</p>
+	<p class="accent">some text</p>
+	<p class="warn">some text</p>
+	<button mat-raised-button color="primary" *ngIf="mode == 'small'">SMALL MODE BUTTON</button>
+	<button mat-raised-button color="warn" *ngIf="mode == 'large'">LARGE MODE BUTTON</button>
+	<a mat-button target="_blank" href="https://material.angular.io/">GO TO MATERIAL DOCS</a>
+</mat-card>
+
+<div fxLayout="row" fxLayout.xs="column">
+	<mat-card fxFlex="100" style="margin: 5px">A card with some content</mat-card>
+	<mat-card fxFlex="100" style="margin: 5px">A card with some content</mat-card>
+	<mat-card fxFlex="100" style="margin: 5px">A card with some content</mat-card>
+</div>

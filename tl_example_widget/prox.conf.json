@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "http://api.teamlinkage.com/",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

@@ -1,0 +1,14 @@
+@import '../styles';
+
+
+//this shows how you can use colors from main theme
+
+.primary {
+	color: mat-color($primary, default);
+}
+.accent {
+	color: mat-color($accent, default);
+}
+.warn {
+	color: mat-color($warn, default);
+}
