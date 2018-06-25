@@ -12,19 +12,38 @@ export class LoginService {
 	constructor(private http: HttpClient) { }
 	login(): Observable<any> {
 		return this.http.post<any>('/api/login', {
-			email: 'owner@owner.com',
-			password: '1234owner'
+			email: 'ssmith37@uccs.edu',
+			password: 'BIProject'
 		}).pipe(
-			map((res:any) => res.data),
+			map((res: any) => res.data),
 			catchError(this.handleError)
-		)
+		);
 	}
 	getSession(): Observable<Employee> {
 		return this.http.get('/api/session')
 		.pipe(
-			map((res:any) => this.mapEmployee(res)),
+			map((res: any) => this.mapEmployee(res)),
 			catchError(this.handleError)
-		)
+		);
+	}
+
+	getProjects(): Observable<Object> {
+		return this.http.get('api/employee/data/projects');
+	}
+	
+	addProject(name: string): Observable<Object> {
+		console.log('creating a project');
+		// this.http.post('api/employee/data/project',
+		// {
+		// 	'project_id' : '2',
+		// 	'name' : name,
+		// 	'employee_id' : '2',
+		// });
+		return this.http.post('api/project', {
+			'name' : name,
+			'start' : Date.now(),
+			'end' : Date.now(),
+		});
 	}
 
 	private mapEmployee(res): Employee {
@@ -53,14 +72,14 @@ export class LoginService {
 		try {
 			var errorObj = err.error;
 			if (errorObj.status === 'fail') {
-				alert(errorObj.data.message)
+				alert(errorObj.data.message);
 			} else if (errorObj.status === 'error') {
-				alert(errorObj.message)
+				alert(errorObj.message);
 			} else {
 				alert("There was a problem with our hyperdrive and we couldn't retrive your data!");
 			}
 			return throwError(errorObj);
-		} catch(e) {
+		} catch (e) {
 			return throwError(err);
 		}
 	}

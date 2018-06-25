@@ -12,3 +12,70 @@
 .warn {
 	color: mat-color($warn, default);
 }
+
+.halfSegment {
+	width:50%;
+	background-color:#369;
+	height:550px;
+	display:inline-block;
+	outline-color: black;
+	outline-width: 3px;
+	outline-style: solid;
+
+	.topLeftSegment {
+		background-color: #666;
+		height:35%;
+		outline-color: black;
+		outline-width: 1px;
+		outline-style: solid;
+	}
+	
+	.bottomLeftSegment{
+		background-color: #999;
+		height:65%;
+		overflow: auto;
+		outline-color: black;
+		outline-width: 1px;
+		outline-style: solid;
+	}
+
+	.topRightSegment{
+		background-color:rgb(200,200,200);
+		height:35%;
+		outline-color: black;
+		outline-width: 1px;
+		outline-style: solid;
+	}
+	.midRightSegment{
+		background-color:rgb(150,150,150);
+		height:20%;
+		outline-color: black;
+		outline-width: 1px;
+		outline-style: solid;
+	}
+	.bottomRightSegment{
+		background-color:rgb(100,100,100);
+		height:45%;
+		overflow: auto;
+		outline-color: black;
+		outline-width: 1px;
+		outline-style: solid;
+	}
+}
+
+.reviewCard {
+	height:100px;
+	background-color:#669;
+	outline-color: black;
+	outline-width: 1px;
+	outline-style: solid;
+}
+
+.employeeCard {
+	height:100px;
+	background-color:#868;
+	outline-color: black;
+	outline-width: 1px;
+	outline-style: solid;
+	
+}

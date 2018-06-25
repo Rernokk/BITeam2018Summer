@@ -11,10 +11,66 @@
 	<button mat-raised-button color="primary" *ngIf="mode == 'small'">SMALL MODE BUTTON</button>
 	<button mat-raised-button color="warn" *ngIf="mode == 'large'">LARGE MODE BUTTON</button>
 	<a mat-button target="_blank" href="https://material.angular.io/">GO TO MATERIAL DOCS</a>
+	<div>
+		<div>
+			<input [(ngModel)]='projectName' placeholder="Project Name">
+			<button (click)="addProject()">Add Project</button>
+		</div>
+		<div>
+			<button (click)="getProjects()">Get Projects</button>
+		</div>
+	</div>
 </mat-card>
 
 <div fxLayout="row" fxLayout.xs="column">
 	<mat-card fxFlex="100" style="margin: 5px">A card with some content</mat-card>
 	<mat-card fxFlex="100" style="margin: 5px">A card with some content</mat-card>
 	<mat-card fxFlex="100" style="margin: 5px">A card with some content</mat-card>
+</div>
+
+
+<!-- Demo Layout-->
+<div>
+	<button (click)="constructReviewCard()"> Add Review </button>
+	<mat-card>
+		<!-- Large -->
+		<div *ngIf="mode == 'large'">
+			<div class="halfSegment">
+				<div class='topLeftSegment'>
+
+				</div>
+				<div class='bottomLeftSegment' id='reviewCardSection'>
+					<div class='reviewCard' *ngFor='let review of reviewCards'>
+						<div>
+							<span style='vertical-align:middle;text-align: center'> {{ review.name }} </span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="halfSegment">
+				<div class='topRightSegment'>
+
+				</div>
+				<div class='midRightSegment'>
+
+				</div>
+				<div class='bottomRightSegment'>
+					<div class='employeeCard' *ngFor='let employee of projectEmployees'>
+						<div style='display:inline-block; width:10%; background-color:#333'>
+							<img src='https://pbs.twimg.com/profile_images/948761950363664385/Fpr2Oz35_400x400.jpg' style='padding:10px; width:80px;height:80px;border-radius: 50%;display:inline-block;'>
+						</div>
+						<div style='display:inline-block; height:100%; width:70%;background-color:aqua'>
+
+						</div>
+						<div style='display:inline-block; width:10%; background-color:#333'>
+							<img src='https://pbs.twimg.com/profile_images/948761950363664385/Fpr2Oz35_400x400.jpg' style='padding:10px;width:80px;height:80px;border-radius: 50%;display:inline-block;'>
+						</div>
+						<div style='display:inline-block;  width:10%; background-color:#333'>
+							<img src='https://pbs.twimg.com/profile_images/948761950363664385/Fpr2Oz35_400x400.jpg' style='padding:10px;width:80px;height:80px;border-radius: 50%;display:inline-block;'>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</mat-card>
 </div>

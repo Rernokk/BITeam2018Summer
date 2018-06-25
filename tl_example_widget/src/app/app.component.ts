@@ -12,8 +12,11 @@ export class AppComponent implements OnInit {
 	title = 'widget example';
 	employee: any;
 	mode: string = 'small';
+	projectName: string;
+	reviewCards: Array<object>;
+	projectEmployees: Array<object>;
 	ngOnInit() {
-		//note that the login function is only needed durring development of the widget
+		// note that the login function is only needed durring development of the widget
 		var lSub = this.loginService.login().subscribe(data => {
 			var lSub2 = this.loginService.getSession().subscribe(employee => {
 				this.employee = employee;
@@ -28,6 +31,10 @@ export class AppComponent implements OnInit {
 		$(window).resize(e => {
 			this.checkWidth();
 		});
+		this.reviewCards = new Array<object>();
+		this.projectEmployees = new Array<object>();
+		this.reviewCards.push({'name' : 'John Doe'});
+		this.projectEmployees.push({'name' : 'John Doe'});
 	}
 
 	private checkWidth() {
@@ -36,5 +43,22 @@ export class AppComponent implements OnInit {
 		} else {
 			this.mode = 'small';
 		}
+	}
+
+	getProjects() {
+		this.loginService.getProjects().subscribe(obj => {
+			console.log(obj);
+		});
+	}
+
+	addProject() {
+		this.loginService.addProject(this.projectName).subscribe(obj => {
+			console.log(obj);	
+		});
+	}
+
+	constructReviewCard() {
+		console.log("adding review");
+		this.reviewCards.push({ "name" : "John Doe" });
 	}
 }
