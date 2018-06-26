@@ -24,15 +24,15 @@ export class AppComponent implements OnInit {
 	ngOnInit() {
 		// note that the login function is only needed durring development of the widget
 
-		// Login (Temporarily Disabled while servers are down)
-		// var lSub = this.loginService.login().subscribe(data => {
-		// 	var lSub2 = this.loginService.getSession().subscribe(employee => {
-		// 		this.employee = employee;
-		// 		console.log(employee);
-		// 		lSub.unsubscribe();
-		// 		lSub2.unsubscribe();
-		// 	});
-		// });
+		//Login (Temporarily Disabled while servers are down)
+		var lSub = this.loginService.login().subscribe(data => {
+			var lSub2 = this.loginService.getSession().subscribe(employee => {
+				this.employee = employee;
+				console.log(employee);
+				lSub.unsubscribe();
+				lSub2.unsubscribe();
+			});
+		});
 
 		this.checkWidth();
 
