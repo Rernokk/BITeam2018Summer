@@ -19,12 +19,12 @@
 	height:550px;
 	display:inline-block;
 	outline-color: black;
-	outline-width: 3px;
+	outline-width: 0px;
 	outline-style: solid;
 
 	.topLeftSegment {
 		background-color: #666;
-		height:35%;
+		height:40%;
 		outline-color: black;
 		outline-width: 1px;
 		outline-style: solid;
@@ -32,7 +32,7 @@
 	
 	.bottomLeftSegment{
 		background-color: #999;
-		height:65%;
+		height:60%;
 		overflow: auto;
 		outline-color: black;
 		outline-width: 1px;
@@ -64,18 +64,31 @@
 }
 
 .reviewCard {
-	height:100px;
+	height:200px;
 	background-color:#669;
 	outline-color: black;
 	outline-width: 1px;
 	outline-style: solid;
+	position: relative;
 }
 
 .employeeCard {
-	height:100px;
+	height:auto;
 	background-color:#868;
 	outline-color: black;
-	outline-width: 1px;
+	outline-width: 0px;
 	outline-style: solid;
-	
+	width:100%;
+}
+
+
+.reviewRating {
+	opacity: .6;
+}
+
+.reviewRating:hover {
+	opacity: 1;
+	img{
+		filter: sepia(100%);
+	}
 }
