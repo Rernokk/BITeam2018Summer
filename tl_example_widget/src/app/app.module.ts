@@ -8,10 +8,12 @@ import { NgModule } from '@angular/core';
 import { MaterialModule } from './material.module';
 
 import { AppComponent } from './app.component';
+import { ApiExampleComponent } from './components/api-example/api-example.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ApiExampleComponent
   ],
   imports: [
 	  BrowserModule,
