@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from './services/login.service';
 import * as $ from 'jquery';
+import { Employee } from './models/employee';
 
 @Component({
   selector: 'app-root',
@@ -23,16 +24,15 @@ export class AppComponent implements OnInit {
 	
 	ngOnInit() {
 		// note that the login function is only needed durring development of the widget
-
-		// Login (Temporarily Disabled while servers are down)
-		// var lSub = this.loginService.login().subscribe(data => {
-		// 	var lSub2 = this.loginService.getSession().subscribe(employee => {
-		// 		this.employee = employee;
-		// 		console.log(employee);
-		// 		lSub.unsubscribe();
-		// 		lSub2.unsubscribe();
-		// 	});
-		// });
+		
+		var lSub = this.loginService.login().subscribe(data => {
+			var lSub2 = this.loginService.getSession().subscribe(employee => {
+				this.employee = employee;
+				console.log(employee);
+				lSub.unsubscribe();
+				lSub2.unsubscribe();
+			});
+		});
 
 		this.checkWidth();
 
@@ -71,9 +71,10 @@ export class AppComponent implements OnInit {
 	}
 
 	addProject() {
-		this.loginService.addProject(this.projectName).subscribe(obj => {
-			console.log(obj);	
-		});
+		// this.loginService.addProject(this.projectName).subscribe(obj => {
+		// 	console.log(obj);	
+		// });
+		console.log(this.employee);
 	}
 
 	addEmployee() {
@@ -91,5 +92,9 @@ export class AppComponent implements OnInit {
 
 	toggleReview() {
 		this.isReviewing = !this.isReviewing;
+	}
+
+	alert() {
+		alert('ping');
 	}
 }

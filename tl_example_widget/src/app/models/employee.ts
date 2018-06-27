@@ -17,7 +17,7 @@ export class Employee {
     public organization: string,
     public online: string
   ) {
-	  //add extras here
+	  // add extras here
 	  this.full_name = this.first_name + " " + this.last_name;
   }
 }

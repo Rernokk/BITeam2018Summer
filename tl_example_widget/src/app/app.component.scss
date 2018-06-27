@@ -15,7 +15,6 @@
 
 .halfSegment {
 	width:50%;
-	background-color:#369;
 	height:550px;
 	display:inline-block;
 	outline-color: black;
@@ -23,8 +22,8 @@
 	outline-style: solid;
 
 	.topLeftSegment {
-		background-color: #666;
 		height:40%;
+		background-color:rgb(240,240,240);
 		outline-color: black;
 		outline-width: 1px;
 		outline-style: solid;
@@ -57,15 +56,12 @@
 		background-color:rgb(100,100,100);
 		height:45%;
 		overflow: auto;
-		outline-color: black;
-		outline-width: 1px;
-		outline-style: solid;
 	}
 }
 
 .reviewCard {
 	height:200px;
-	background-color:#669;
+	background-color:rgb(200,200,200);
 	outline-color: black;
 	outline-width: 1px;
 	outline-style: solid;
@@ -74,11 +70,13 @@
 
 .employeeCard {
 	height:auto;
-	background-color:#868;
+	background-color:rgb(180,180,180);
 	outline-color: black;
 	outline-width: 0px;
 	outline-style: solid;
 	width:100%;
+	display:block;
+	margin:auto;
 }
 
 
@@ -91,4 +89,43 @@
 	img{
 		filter: sepia(100%);
 	}
+}
+
+.smallReviewArrow {
+	width:10%;
+	height:100%;
+	display:inline-block;
+	background-color:#999;
+	border-radius: 10px;
+}
+
+.smallReviewArrow:hover{
+	background-color:#666;
+}
+
+.TLButton {
+	background-color:rgb(250,250,250);
+	display:inline-block;
+	vertical-align: middle;
+	padding-left:10px;
+	padding-right:10px;
+	margin-bottom: 5px;
+	border-radius: 5px;
+	height:75%;
+}
+
+.TLButton:hover {
+	background-color:rgb(230,230,230);
+}
+
+.TeamConfig{
+	display:block;
+	 margin:auto;
+	 width:60px;
+	 height:60px;
+	 border-radius: 50%;
+}
+
+.TeamConfig:hover{
+	filter: sepia(100%);
 }

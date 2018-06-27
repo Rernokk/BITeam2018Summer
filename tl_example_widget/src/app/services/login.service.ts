@@ -12,8 +12,8 @@ export class LoginService {
 	constructor(private http: HttpClient) { }
 	login(): Observable<any> {
 		return this.http.post<any>('/api/login', {
-			email: 'ssmith37@uccs.edu',
-			password: 'BIProject'
+			email: 'sparish@agi.teamlinkage.com',
+			password: 'cKOespMb'
 		}).pipe(
 			map((res: any) => res.data),
 			catchError(this.handleError)
