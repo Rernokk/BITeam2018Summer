@@ -12,8 +12,8 @@ export class LoginService {
 	constructor(private http: HttpClient) { }
 	login(): Observable<any> {
 		return this.http.post<any>('/api/login', {
-			email: 'sparish@agi.teamlinkage.com',
-			password: 'cKOespMb'
+			email: 'cwood@agi.teamlinkage.com',
+			password: '3Pb9OAls'
 		}).pipe(
 			map((res: any) => res.data),
 			catchError(this.handleError)
@@ -29,6 +29,10 @@ export class LoginService {
 
 	getProjects(): Observable<Object> {
 		return this.http.get('api/employee/data/projects');
+	}
+	
+	getProject(id:number): Observable<Object> {
+		return this.http.get('/api/project/' + id);
 	}
 	
 	addProject(name: string): Observable<Object> {

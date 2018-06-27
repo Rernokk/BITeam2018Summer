@@ -31,6 +31,8 @@ export class AppComponent implements OnInit {
 				console.log(employee);
 				lSub.unsubscribe();
 				lSub2.unsubscribe();
+				
+				this.getProjects();
 			});
 		});
 
@@ -65,8 +67,15 @@ export class AppComponent implements OnInit {
 	}
 
 	getProjects() {
+		this.projects = [];
+		
 		this.loginService.getProjects().subscribe(obj => {
-			console.log(obj);
+			for(var i = 0; i < obj['data'].length; i++){
+				this.loginService.getProject(obj['data'][i]['project_id']).subscribe(obj2 => {
+					this.projects.push(obj2);
+					console.log(this.projects[i - 1]);
+				});
+			}
 		});
 	}
 
