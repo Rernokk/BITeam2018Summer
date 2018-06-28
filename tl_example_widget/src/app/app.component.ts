@@ -20,18 +20,20 @@ export class AppComponent implements OnInit {
 	projectEmployees: Array<object>;
 	projects: Array<object>;
 	temp: Array<object>;
+	currentProject: number;
+	sortMethod: number;
+	employeeLoaded: boolean = false;
 	
 	ngOnInit() {
 		// note that the login function is only needed durring development of the widget
 
-		//Login (Temporarily Disabled while servers are down)
 		var lSub = this.loginService.login().subscribe(data => {
 			var lSub2 = this.loginService.getSession().subscribe(employee => {
 				this.employee = employee;
 				console.log(employee);
 				lSub.unsubscribe();
 				lSub2.unsubscribe();
-				
+				this.employeeLoaded = true;
 				this.getProjects();
 			});
 		});
@@ -56,6 +58,8 @@ export class AppComponent implements OnInit {
 
 		this.isAdmin = false;
 		this.isReviewing = true;
+		this.currentProject = 0;
+		this.sortMethod = 0;
 	}
 
 	private checkWidth() {
@@ -68,18 +72,56 @@ export class AppComponent implements OnInit {
 
 	getProjects() {
 		this.projects = [];
-		
-		this.loginService.getProjects().subscribe(obj => {
-			for(var i = 0; i < obj['data'].length; i++){
-				this.loginService.getProject(obj['data'][i]['project_id']).subscribe(obj2 => {
+			
+		this.loginService.getProjects('/api/department/1/projects').subscribe(obj => {
+			console.log(obj);
+			for (var i = 0; i < obj['data'].length; i++) {
+				this.loginService.getProject(obj['data'][i]['id']).subscribe(obj2 => {
 					this.projects.push(obj2);
-					console.log(this.projects[i - 1]);
+					this.getEmployees();
 				});
 			}
 		});
 	}
 
+	getEmployees() {
+		this.projectEmployees = [];
+		for (var i = 0; i < this.projects[this.currentProject]['data']['employees'].length; i++) {
+			this.projectEmployees.push(this.projects[this.currentProject]['data']['employees'][i]);
+		}
+	}
+
+	sortEmployees(val: string) {
+		console.log(val);
+		switch (val) {
+			case('0'):
+				this.projectEmployees = this.projectEmployees.sort((q1, q2) => ((q1['first_name']) > (q2['first_name']) ? 1 : -1));
+				break;
+			case('1'):
+				this.projectEmployees = this.projectEmployees.sort((q1, q2) => ((q1['first_name']) > (q2['first_name']) ? -1 : 1));
+				break;
+			case('2'):
+				this.projectEmployees = this.projectEmployees.sort((q1, q2) => ((q1['last_name']) > (q2['last_name']) ? 1 : -1));
+				break;
+			case('3'):
+				this.projectEmployees = this.projectEmployees.sort((q1, q2) => ((q1['last_name']) > (q2['last_name']) ? -1 : 1));
+				break;
+		}
+	}
+	
+	targetProject(val: string) {
+		console.log(val);
+		for (var i = 0; i < this.projects.length; i++) {
+			if (this.projects[i]['data']['name'] === val) {
+				this.currentProject = i;
+				this.getEmployees();
+				return;
+			}
+		}
+	}
+
 	addProject() {
+		console.log("Creating Project w/ name: " + this.projectName);
 		this.loginService.addProject(this.projectName).subscribe(obj => {
 			console.log(obj);	
 		});

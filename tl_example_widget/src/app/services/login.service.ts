@@ -27,11 +27,12 @@ export class LoginService {
 		);
 	}
 
-	getProjects(): Observable<Object> {
-		return this.http.get('api/employee/data/projects');
+	getProjects(link: string): Observable<Object> {
+		// return this.http.get('api/employee/data/projects');
+		return this.http.get(link);
 	}
 	
-	getProject(id:number): Observable<Object> {
+	getProject(id: number): Observable<Object> {
 		return this.http.get('/api/project/' + id);
 	}
 	
@@ -45,8 +46,8 @@ export class LoginService {
 		// });
 		return this.http.post('api/project', {
 			'name' : name,
-			'start' : Date.now(),
-			'end' : Date.now(),
+			'start' : new Date("2015-03-25"),
+			'stop' : new Date("2015-03-25"),
 		});
 	}
 

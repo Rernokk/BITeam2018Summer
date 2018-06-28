@@ -34,6 +34,7 @@
 	<button (click)='toggleAdmin()'> Toggle Admin ({{ !isAdmin }}) </button>
 	<button (click)='addEmployee()'> Add Employee </button>
 	<button (click)='toggleReview()'> Review Mode ({{ !isReviewing }}) </button>
+	<button (click)='getEmployees()'> Get Employees </button>
 	<mat-card>
 		<!-- Small-->
 		<div *ngIf='mode == "small"'>
@@ -103,9 +104,9 @@
 			<div class="halfSegment">
 				<div class='topLeftSegment'>
 					<div style='height:20%;background-color:rgb(220,220,220)'>
-						<select>
-							<option *ngFor='let project of projects'>
-								{{ project.projectName }}
+						<select (change)='targetProject($event.target.value)'>
+							<option *ngFor='let project of projects' value='{{project.data.name}}'>
+								{{ project['data']['name'] }}
 							</option>
 						</select>
 					</div>
@@ -224,13 +225,13 @@
 								<input placeholder="Search Members">
 							</div>
 							<div style='display:inline-block; height:auto; margin:auto; position:absolute; bottom:0; right: 0; padding:10px;'>
-								<select>
-									<option> Sort By... </option>
-									<option> Sort By... </option>
-									<option> Sort By... </option>
-									<option> Sort By... </option>
-									<option> Sort By... </option>
-									<option> Sort By... </option>
+								<select (change)='sortEmployees($event.target.value)' ng-model="sortMethod">
+									<option value="-1"> Sort By... </option>
+									<option value="0"> Sort By First (Ascending) </option>
+									<option value="1"> Sort By First (Descending) </option>
+									<option value="2"> Sort By Last (Ascending) </option>
+									<option value="3"> Sort By Last (Descending) </option>
+									<option value="4"> Sort By... </option>
 								</select>
 							</div>
 						</div>
@@ -238,13 +239,13 @@
 				</div>
 				<div class='bottomRightSegment'>
 					<div class='employeeCard' *ngFor='let employee2 of projectEmployees'>
-						<div style='height:100%;background-color:rgb(180,180,180); width:95%; margin:auto;'>
+						<div style='height:100%;background-color:rgb(180,180,180); width:95%; margin:auto; padding-top:10px;'>
 							<div style='display:inline-block; width:10%; height:100%'>
 								<img src='https://pbs.twimg.com/profile_images/948761950363664385/Fpr2Oz35_400x400.jpg' class='TeamConfig'>
 							</div>
 							
 							<div style='display:inline-block; height:100%; width:45%;vertical-align: middle;'>
-								<span style='height:100%'>{{employee.full_name}}</span>
+								<span style='height:100%'>{{employee2.first_name}} {{employee2.last_name}}</span>
 							</div>
 
 							<div style='display:inline-block;  width:15%; height:100%'>
