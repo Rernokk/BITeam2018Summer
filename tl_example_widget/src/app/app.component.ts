@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from './services/login.service';
 import * as $ from 'jquery';
+import { Employee } from './models/employee';
 
 @Component({
   selector: 'app-root',
@@ -11,19 +12,29 @@ export class AppComponent implements OnInit {
 	constructor(public loginService: LoginService) {}
 	title = 'widget example';
 	employee: any;
+	
 	mode: string = 'small';
 	projectName: string;
+	currentFeedback: string;
+	
 	isAdmin: boolean;
-	isReviewing: boolean;
+	isViewing: boolean;
 
 	reviewCards: Array<object>;
 	projectEmployees: Array<object>;
 	projects: Array<object>;
 	temp: Array<object>;
+
 	currentProject: number;
 	sortMethod: number;
+	targetRating: number = 1;
+	employeeNumber: number;
+	currentReview: number;
+
 	employeeLoaded: boolean = false;
 	
+	targetEmployee: Employee = null;
+
 	ngOnInit() {
 		// note that the login function is only needed durring development of the widget
 
@@ -48,18 +59,17 @@ export class AppComponent implements OnInit {
 		this.projectEmployees = new Array<object>();
 		this.projects = new Array<object>();
 		this.temp = new Array<object>();
-		this.reviewCards.push({'name' : 'John Doe'});
-		this.projectEmployees.push({'name' : 'John Doe'});
-		this.projects.push({"projectName" : "I am a project"});
-		this.projects.push({"projectName" : "I am a project 2"});
 		for (var i = 0; i < 5; i++) {
 			this.temp.push({"a": i});
 		}
 
 		this.isAdmin = false;
-		this.isReviewing = true;
-		this.currentProject = 0;
+		this.isViewing = true;
 		this.sortMethod = 0;
+		this.employeeNumber = 0;
+		this.currentFeedback = "";
+		this.currentReview = 0;
+		this.constructReviewCard();
 	}
 
 	private checkWidth() {
@@ -74,10 +84,10 @@ export class AppComponent implements OnInit {
 		this.projects = [];
 			
 		this.loginService.getProjects('/api/department/1/projects').subscribe(obj => {
-			console.log(obj);
 			for (var i = 0; i < obj['data'].length; i++) {
 				this.loginService.getProject(obj['data'][i]['id']).subscribe(obj2 => {
 					this.projects.push(obj2);
+					this.projects = this.projects.sort((q1, q2) => ((q1['data']['name']) > (q2['data']['name']) ? 1 : -1));
 					this.getEmployees();
 				});
 			}
@@ -86,13 +96,15 @@ export class AppComponent implements OnInit {
 
 	getEmployees() {
 		this.projectEmployees = [];
-		for (var i = 0; i < this.projects[this.currentProject]['data']['employees'].length; i++) {
-			this.projectEmployees.push(this.projects[this.currentProject]['data']['employees'][i]);
+		if (this.projects[this.currentProject] != null) {
+			for (var i = 0; i < this.projects[this.currentProject]['data']['employees'].length; i++) {
+				this.projectEmployees.push(this.projects[this.currentProject]['data']['employees'][i]);
+			}
+			this.employeeNumber = this.projects[this.currentProject]['data']['employees'].length;
 		}
 	}
 
 	sortEmployees(val: string) {
-		console.log(val);
 		switch (val) {
 			case('0'):
 				this.projectEmployees = this.projectEmployees.sort((q1, q2) => ((q1['first_name']) > (q2['first_name']) ? 1 : -1));
@@ -133,14 +145,62 @@ export class AppComponent implements OnInit {
 
 	constructReviewCard() {
 		console.log("adding review");
-		this.reviewCards.push({ "name" : "John Doe" });
+		this.reviewCards.push({ "content" : "John Doe" });
+		this.reviewCards.push({ "content" : "James Doe" });
+		this.reviewCards.push({ "content" : "Jane Doe" });
+		this.reviewCards.push({ "content" : "Jill Doe" });
 	}
 
 	toggleAdmin() {
 		this.isAdmin = !this.isAdmin;
 	}
 
-	toggleReview() {
-		this.isReviewing = !this.isReviewing;
+	toggleReview(val: number) {
+		this.isViewing = !this.isViewing;
+		if (val === 0) {
+			this.targetEmployee = null;
+		}
+	}
+
+	writeComment(emp: object) {
+		console.log("Writing comment for " + emp['first_name']);
+		this.isViewing = false;
+		this.targetEmployee = emp as Employee;
+		this.fetchReview();
+	}
+
+	displayPhone(emp: object) {
+		console.log("Displaying phone of " + emp['first_name'] + ", " + emp['phone_number']);
+	}
+
+	displayEmail(emp: object) {
+		console.log("Displaying email of " + emp['first_name'] + ", " + emp['email']);
+	}
+
+	setRating(rating: number) {
+		this.targetRating = rating;
+		
+	}
+
+	setClass() {
+		return "tempClass";
+	}
+
+	fetchReview() {
+		console.log("Fetching Reviews");
+	}
+
+	submitReview() {
+		console.log(this.currentFeedback);
+	}
+
+	moveReviews(dir: number) {
+		this.currentReview += dir;
+		if (this.currentReview < 0) {
+			this.currentReview = this.reviewCards.length - 1;
+		} else if (this.currentReview >= this.reviewCards.length) {
+			this.currentReview = 0;
+		}
+		console.log(this.currentReview);
 	}
 }

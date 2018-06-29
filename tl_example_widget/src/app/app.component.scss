@@ -70,7 +70,7 @@
 
 .employeeCard {
 	height:auto;
-	background-color:rgb(180,180,180);
+	background-color:rgb(80,80,80);
 	outline-color: black;
 	outline-width: 0px;
 	outline-style: solid;
@@ -78,7 +78,6 @@
 	display:block;
 	margin:auto;
 }
-
 
 .reviewRating {
 	opacity: .6;
@@ -128,4 +127,9 @@
 
 .TeamConfig:hover{
 	filter: sepia(100%);
+}
+
+#ratingText {
+	text-align:center;
+	vertical-align: middle;
 }
