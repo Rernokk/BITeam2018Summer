@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
 	
 	targetEmployee: Employee = null;
 
-	ngOnInit() {
+	ngOnInit() {		
 		// note that the login function is only needed durring development of the widget
 
 		var lSub = this.loginService.login().subscribe(data => {
