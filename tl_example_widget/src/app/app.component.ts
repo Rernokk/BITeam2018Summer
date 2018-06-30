@@ -99,6 +99,7 @@ export class AppComponent implements OnInit {
 		if (this.projects[this.currentProject] != null) {
 			for (var i = 0; i < this.projects[this.currentProject]['data']['employees'].length; i++) {
 				this.projectEmployees.push(this.projects[this.currentProject]['data']['employees'][i]);
+				console.log(this.projectEmployees[0]);
 			}
 			this.employeeNumber = this.projects[this.currentProject]['data']['employees'].length;
 		}
@@ -168,6 +169,10 @@ export class AppComponent implements OnInit {
 		this.targetEmployee = emp as Employee;
 		this.fetchReview();
 	}
+	
+	fetchEmployeePicture(image_id: string) {
+
+	}
 
 	displayPhone(emp: object) {
 		console.log("Displaying phone of " + emp['first_name'] + ", " + emp['phone_number']);
@@ -181,11 +186,7 @@ export class AppComponent implements OnInit {
 		this.targetRating = rating;
 		
 	}
-
-	setClass() {
-		return "tempClass";
-	}
-
+	
 	fetchReview() {
 		console.log("Fetching Reviews");
 	}
