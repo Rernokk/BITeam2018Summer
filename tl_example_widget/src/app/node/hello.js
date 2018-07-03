@@ -64,26 +64,14 @@ const Entry = sequelize.define('entry', {
     }
 });
 
-Entry.sync().then((responseVal) => {
-    // console.log(responseVal);
-    // return Entry.create({
-    //     Reviewer: "BDC",
-    //     ReviewerID: 99,
-    //     Reviewee: "AS",
-    //     RevieweeID: 15,
-    //     Rating: 3,
-    //     Feedback: ""
-    // })
-})
-
-app.route('/api/fetchReviews/:revieweeID/:reviewerID').get((req, res) => {
-    const revieweeID = req.params.revieweeID
-    console.log("ID: " + revieweeID);
-    console.log("ReviewerID: " + req.params.reviewerID);
+app.route('/api/fetchReviews/:projectID/:recipientID').get((req, res) => {
+    const projectID = req.params.projectID
+    const recipientID = req.params.recipientID
+    console.log("ProjectID: " + projectID);
+    console.log("RecipientID: " + recipientID);
 
     let retVal;
-    sequelize.query('SELECT * FROM entries WHERE ReviewerID = 3', {model : Entry}).then(ret => {
-        //console.log(ret);
+    sequelize.query('SELECT * FROM entries WHERE recipientID = ' + recipientID + " AND projectID = " + projectID,  {model : Entry}).then(ret => {
         console.log("Fetched Reviews");
         res.send({
             ret
@@ -91,9 +79,35 @@ app.route('/api/fetchReviews/:revieweeID/:reviewerID').get((req, res) => {
     });
 });
 
-sequelize.query('SELECT * FROM entries WHERE ReviewerID = 3', {model : Entry}).then(res => {
-    console.log(res);
-});
+app.route('/api/pushReview/:author/:authorID/:recipient/:recipientID/:rating/:comment/:projectID').get((req, res) => {
+    var sql = "INSERT INTO entries (author, authorID, recipient, recipientID, rating, comment, projectID) VALUES ('" + req.params.author + "'," +
+        req.params.authorID + ",'" + req.params.recipient + "'," + req.params.recipientID + "," + req.params.rating + ",'" + req.params.comment + "'," + req.params.projectID + ")";
+    sequelize.query(sql, function(err, result){
+        if (err) throw err;
+        console.log("Inserted.");
+        //return 'success';
+    });
+})
+
+app.route('/api/updateReview/:author/:authorID/:recipient/:recipientID/:rating/:comment/:projectID').get((req, res) => {
+    var sql = "UPDATE entries SET rating =" + req.params.rating + ", comment='" + req.params.comment + "' WHERE authorID=" + req.params.authorID + " AND recipientID=" + req.params.recipientID + ';';
+    sequelize.query(sql, {model : Entry}).then(ret => {
+        console.log("Fetched target review.");
+        res.send({
+            ret
+        });
+    });
+})
+
+app.route('/api/requestReview/:authorID/:recipientID/:projectID').get((req, res) => {
+    var sql = "SELECT * FROM entries WHERE recipientID=" + req.params.recipientID + " AND authorID=" + req.params.authorID + " AND projectID=" + req.params.projectID;
+    sequelize.query(sql, {model : Entry}).then(ret => {
+        console.log("Fetched target review.");
+        res.send({
+            ret
+        });
+    })
+})
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
 

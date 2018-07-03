@@ -3,6 +3,7 @@ import { LoginService } from './services/login.service';
 import * as $ from 'jquery';
 import { Employee } from './models/employee';
 import { HttpClient } from '@angular/common/http';
+import { DISABLED } from '@angular/forms/src/model';
 
 @Component({
   selector: 'app-root',
@@ -31,6 +32,8 @@ export class AppComponent implements OnInit {
 	targetRating: number = 1;
 	employeeNumber: number;
 	currentReview: number;
+	currentProjectID: number;
+	projectAverage: number;
 
 	employeeLoaded: boolean = false;
 	
@@ -70,7 +73,9 @@ export class AppComponent implements OnInit {
 		this.employeeNumber = 0;
 		this.currentFeedback = "";
 		this.currentReview = 0;
-		this.constructReviewCard();
+		this.currentProjectID = 0;
+		this.projectAverage = 4.5;
+		// this.constructReviewCard();
 	}
 
 	private checkWidth() {
@@ -128,6 +133,8 @@ export class AppComponent implements OnInit {
 		for (var i = 0; i < this.projects.length; i++) {
 			if (this.projects[i]['data']['name'] === val) {
 				this.currentProject = i;
+				this.currentProjectID = this.projects[i]['data']['id'];
+				console.log(this.projects[i]);
 				this.getEmployees();
 				this.fetchReviews();
 				return;
@@ -158,18 +165,45 @@ export class AppComponent implements OnInit {
 		this.isAdmin = !this.isAdmin;
 	}
 
-	toggleReview(val: number) {
-		this.isViewing = !this.isViewing;
-		if (val === 0) {
-			this.targetEmployee = null;
+	toggleReview(emp: object) {
+		if (this.employee.id === (emp as Employee).id){
+			return;
 		}
+
+		if (this.targetEmployee == null){
+			this.targetEmployee = emp as Employee;
+			this.isViewing = false;
+		} else if (this.targetEmployee === emp as Employee) {
+			this.disableReview();
+			return;
+		} else {
+			this.targetEmployee = emp as Employee;
+			this.isViewing = false;
+		}
+		this.http.get("http://localhost:3000/api/requestReview/" + this.employee.id + "/" + this.targetEmployee.id + "/" + this.currentProjectID).subscribe((obj: Array<object>) => {
+			if (obj['ret'].length > 0){
+				this.currentFeedback = obj['ret'][0]['comment'];
+				this.targetRating = obj['ret'][0]['rating'];
+			}
+		});
 	}
 
-	writeComment(emp: object) {
-		console.log("Writing comment for " + emp['first_name']);
-		this.isViewing = false;
-		this.targetEmployee = emp as Employee;
-		this.fetchReviews();
+	disableReview() {
+		this.targetEmployee = null;
+		this.isViewing = true;
+	}
+
+	writeComment() {
+		// this.http.get("http://localhost:3000/api/pushReview/jsonJohn/0/jsonJack/4/2/Good Job/4").subscribe(() => {
+		this.http.get("http://localhost:3000/api/pushReview/" + this.employee.first_name + " " + this.employee.last_name +"/" + this.employee.id + "/" + this.targetEmployee.first_name + " " + this.targetEmployee.last_name + "/" + this.targetEmployee.id +"/" + this.targetRating + "/" + this.currentFeedback + "/" + this.currentProjectID).subscribe(() => {
+			console.log("Commented");	
+		});
+	}
+
+	updateComment(){
+		this.http.get("http://localhost:3000/api/updateReview/" + this.employee.first_name + " " + this.employee.last_name +"/" + this.employee.id + "/" + this.targetEmployee.first_name + " " + this.targetEmployee.last_name + "/" + this.targetEmployee.id +"/" + this.targetRating + "/" + this.currentFeedback + "/" + this.currentProjectID).subscribe(() => {
+			console.log("Updated Comment");	
+		});
 	}
 	
 	fetchEmployeePicture(image_id: string) {
@@ -186,32 +220,38 @@ export class AppComponent implements OnInit {
 
 	setRating(rating: number) {
 		this.targetRating = rating;
-		
+		console.log("Set rating: " + rating);
 	}
 	
 	fetchReviews() {
 		console.log("Fetching Reviews");
-		   // this.r.loadReview("testFile.json", "lol", 0);
-		this.http.get('http://localhost:3000/api/fetchReviews/1/2').subscribe((val: Array<object>) => {
+		this.http.get('http://localhost:3000/api/fetchReviews/' + this.currentProjectID + '/' + this.employee.id).subscribe((val: Array<object>) => {
 		   	console.log(val);
 			this.reviewCards = [];
-			// this.reviewCards.push({'content' : val['ret'][0]['Reviewee']});
+			this.projectAverage = 0;
+			
 			for (var i = 0; i < val['ret'].length; i++){
 				this.reviewCards.push(this.parseReview(val['ret'][i]));
+				this.projectAverage += +(val['ret'][i]['rating']);
 			}
+			this.projectAverage /= val['ret'].length;
 		});
 	}
 
 	parseReview(obj: object): object {
 		var retObj: object;
 		retObj = {
-			'content' : obj['Reviewee']
+			'author' : obj['author'],
+			'recipient' : obj['recipient'],
+			'rating' : obj['rating'],
+			'feedback' : obj['comment'],
+			'editor' : obj['editor']
 		};
 		return retObj;
 	}
 
 	submitReview() {
-		console.log(this.currentFeedback);
+		this.targetReview();
 	}
 
 	moveReviews(dir: number) {
@@ -223,6 +263,27 @@ export class AppComponent implements OnInit {
 		}
 		console.log(this.currentReview);
 	}
+
+	getReviewRating(): number {
+		if (this.reviewCards.length === 0){
+			return 0;
+		}
+		return (this.reviewCards[this.currentReview]['rating']);
+	}
+
+	targetReview() {
+		console.log("Looking for reviews.");
+		this.http.get("http://localhost:3000/api/requestReview/" + this.employee.id + "/" + this.targetEmployee.id + "/" + this.currentProjectID).subscribe((obj: Array<object>) => {
+			console.log(obj);
+			if (obj['ret'].length > 0){
+				this.updateComment();
+			} else {
+				this.writeComment();
+			}
+		});
+	}
 }
+
+
 // Start server w/ ng serve --open --proxy-config prox.conf.json
-// db4free.net test server
+// db4free.net test server, login info in hello.js line 27
