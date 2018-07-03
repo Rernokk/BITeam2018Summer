@@ -54,7 +54,7 @@ class ReviewLoader{
 class ReviewSaver{
 	constructor(private http:HttpClient){}
 	
-	saveReview(fileName:string, review:Review) : Observable<object>{
+	saveReview(fileName:string, review:Review): Observable<object>{
 		return this.http.post<object>('assets/' + fileName, 
 			{
 			}
@@ -90,34 +90,35 @@ class ReviewSaver{
 })
 export class ApiExampleComponent implements OnInit {
 	r: Review;
+	data;
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-	  //temp date info
-	  let date:Date = new Date();
+	  // Temp date info
+	  let date: Date = new Date();
 	  
 	  let month: any = date.getUTCMonth() + 1;
 	  let day: any = date.getUTCDate();
 	  let year: any = date.getUTCFullYear();
 	  
-	  let review:string = "This is a test review string";
-	  let rating:number = 4;
-	  let writer:string = "Bryce";
-	  let writerID:number = 1;
-	  let receiver:string = "Shannon";
-	  let receiverID:number = 3;
-	  let _new:boolean = true;
-	  let _edited:boolean = false;
-	  let editor:string = "";
-	  let editorID:number = -1;
-	  let projectID:number = 1;
+	  let review: string = "This is a test review string";
+	  let rating: number = 4;
+	  let writer: string = "Bryce";
+	  let writerID: number = 1;
+	  let receiver: string = "Shannon";
+	  let receiverID: number = 3;
+	  let _new: boolean = true;
+	  let _edited: boolean = false;
+	  let editor: string = "";
+	  let editorID: number = -1;
+	  let projectID: number = 1;
 	  
 	  this.r = new Review(month, year, day, review, rating,
 						writer, writerID, receiver, receiverID, _new, _edited,
 						editor, editorID, projectID, this.http);
 						
-	//r.saveReview("testFile.json");
-	//r.loadReview("testFile.json", "lol", 0);
+	// r.saveReview("testFile.json");
+	// r.loadReview("testFile.json", "lol", 0);
   }
   
   saveReview() {
@@ -125,8 +126,10 @@ export class ApiExampleComponent implements OnInit {
   }
   
   loadReview() {
-	 this.r.loadReview("testFile.json", "lol", 0);
+	 // this.r.loadReview("testFile.json", "lol", 0);
+	this.http.get('http://localhost:3000/api/fetchReviews/1/2').subscribe((val: Review) => {
+	 	console.log(val);
+	 	this.r.receiver = val['reviewee'];
+  	});
   }
 }
-
-

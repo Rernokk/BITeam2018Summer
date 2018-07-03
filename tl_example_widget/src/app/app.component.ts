@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginService } from './services/login.service';
 import * as $ from 'jquery';
 import { Employee } from './models/employee';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import { Employee } from './models/employee';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-	constructor(public loginService: LoginService) {}
+	constructor(public loginService: LoginService, private http: HttpClient) {}
 	title = 'widget example';
 	employee: any;
 	
@@ -128,6 +129,7 @@ export class AppComponent implements OnInit {
 			if (this.projects[i]['data']['name'] === val) {
 				this.currentProject = i;
 				this.getEmployees();
+				this.fetchReviews();
 				return;
 			}
 		}
@@ -167,7 +169,7 @@ export class AppComponent implements OnInit {
 		console.log("Writing comment for " + emp['first_name']);
 		this.isViewing = false;
 		this.targetEmployee = emp as Employee;
-		this.fetchReview();
+		this.fetchReviews();
 	}
 	
 	fetchEmployeePicture(image_id: string) {
@@ -187,8 +189,25 @@ export class AppComponent implements OnInit {
 		
 	}
 	
-	fetchReview() {
+	fetchReviews() {
 		console.log("Fetching Reviews");
+		   // this.r.loadReview("testFile.json", "lol", 0);
+		this.http.get('http://localhost:3000/api/fetchReviews/1/2').subscribe((val: Array<object>) => {
+		   	console.log(val);
+			this.reviewCards = [];
+			// this.reviewCards.push({'content' : val['ret'][0]['Reviewee']});
+			for (var i = 0; i < val['ret'].length; i++){
+				this.reviewCards.push(this.parseReview(val['ret'][i]));
+			}
+		});
+	}
+
+	parseReview(obj: object): object {
+		var retObj: object;
+		retObj = {
+			'content' : obj['Reviewee']
+		};
+		return retObj;
 	}
 
 	submitReview() {
@@ -205,3 +224,5 @@ export class AppComponent implements OnInit {
 		console.log(this.currentReview);
 	}
 }
+// Start server w/ ng serve --open --proxy-config prox.conf.json
+// db4free.net test server
