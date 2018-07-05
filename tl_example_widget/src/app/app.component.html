@@ -1,5 +1,5 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<mat-card *ngIf="employee">
+<!-- <mat-card *ngIf="employee">
 	<p><b>Hello {{employee.full_name}}</b></p>
 	<p>Title: {{employee.title}}</p>
 	<br/>
@@ -26,17 +26,17 @@
 	<mat-card fxFlex="100" style="margin: 5px">A card with some content</mat-card>
 	<mat-card fxFlex="100" style="margin: 5px">A card with some content</mat-card>
 	<mat-card fxFlex="100" style="margin: 5px">A card with some content</mat-card>
-</div>
+</div> -->
 
 <!-- Demo Layout-->
 <div *ngIf='employee'>
-	<button (click)="constructReviewCard()"> Add Review </button>
+	<!-- <button (click)="constructReviewCard()"> Add Review </button> -->
 	<button (click)='toggleAdmin()'> Toggle Admin ({{ !isAdmin }}) </button>
-	<button (click)='addEmployee()'> Add Employee </button>
-	<button (click)='toggleReview()'> Review Mode ({{ !isViewing }}) </button>
-	<button (click)='getEmployees()'> Get Employees </button>
-	<button (click)='writeComment()'> Debug Write Comment </button>
-	<button (click)='updateComment()'> Debug Update Comment </button>
+	<!-- <button (click)='addEmployee()'> Add Employee </button> -->
+	<!-- <button (click)='toggleReview()'> Review Mode ({{ !isViewing }}) </button> -->
+	<!-- <button (click)='getEmployees()'> Get Employees </button> -->
+	<!-- <button (click)='writeComment()'> Debug Write Comment </button> -->
+	<!-- <button (click)='updateComment()'> Debug Update Comment </button> -->
 	<mat-card>
 		<!-- Small-->
 		<div *ngIf='mode == "small"'>
@@ -113,6 +113,7 @@
 			<div class="halfSegment">
 				<div class='topLeftSegment'>
 					<div style='height:20%;background-color:rgb(220,220,220)'>
+						<span style='display:block;text-align: center'>{{employee.first_name}}'s Projects</span>
 						<select (change)='targetProject($event.target.value)'>
 							<option> Select a Project </option>
 							<option *ngFor='let project of projects' value='{{project.data.name}}'>
@@ -120,9 +121,10 @@
 							</option>
 						</select>
 					</div>
-					<div style='height:60%'>
+					<div style='height:60%; display:inline-block; width:100%;'>
 						<div style='float:left; height:50%; width:100%; margin-bottom:-50px;'></div>
-							<span style='display:table; vertical-align: middle; width:50%;'>
+						<div style='display:inline-block; width:50%'>
+							<div style='display:table; vertical-align: middle; width:100%;'>
 								<div  style='display:table-cell; width:20%'>
 									<img src='http://pngimg.com/uploads/star/star_PNG41531.png' *ngIf='projectAverage >= 1' alt='Star' class='projectStar'>
 									<img src='http://www.freepngimg.com/download/star/2-gray-star-png-image.png' *ngIf='!(projectAverage >= 1)'alt='Star' class='projectStar'>
@@ -143,11 +145,15 @@
 									<img src='http://pngimg.com/uploads/star/star_PNG41531.png' *ngIf='projectAverage >= 5' alt='Star' class='projectStar'>
 									<img src='http://www.freepngimg.com/download/star/2-gray-star-png-image.png' *ngIf='!(projectAverage >= 5)'alt='Star' class='projectStar'>
 								</div>
-							</span>
+							</div>
 						</div>
+						<div style='height:60%; display:inline-block; width:50%;'>
+							<span style='text-align: center; height:100%; width:100%;'> {{projectAverage}}/5 Rating ({{ratingCount}} Ratings) </span>
+						</div>
+					</div>
 					<div style='height:20%'>
 						<div style='display:inline-block; height:100%; width:100%; background-color:rgb(220,220,220)'>
-							<div class='TLButton'> Display New Feedback </div>
+							<!-- <div class='TLButton'> Display New Feedback </div> -->
 						</div>
 					</div>
 				</div>
@@ -186,7 +192,7 @@
 										<div style='width:50%;display:inline-block;'> {{review.author}} > {{review.recipient}} </div>
 										<div style='width:50%;display:inline-block;'> Edited by: {{review.editor}} </div>
 									</div>
-									<div style='width:25%;display:inline-block;text-align: center;padding-left:10px;padding-right:10px;'> 12/12/12 </div>
+									<div style='width:25%;display:inline-block;text-align: center;padding-left:10px;padding-right:10px;'> {{review.edited}} </div>
 								</div>
 							</div>
 							<div style='height:50%; padding:10px;'>
@@ -249,22 +255,24 @@
 				</div>
 				<div class='midRightSegment'>
 					<!-- Title Info-->
-					<div style='width:100%; display:block; height:50%; position:relative;'>
+					<!-- <div style='width:100%; display:block; height:50%; position:relative;'>
 						<div style='width:45%; text-align:left; display:inline-block; padding-left:5%; height:100%;'>
 							Project Team
 						</div>
 						<div style='width:45%; text-align:right; display:inline-block; padding-right:5%; height:100%;'>
 							{{ employeeNumber }} Members
 						</div>
-					</div>
+					</div> -->
 
 					<!-- Searching & Sorting -->
-					<div style='width:100%; display:block; height:50%;'>
+					<div style='width:100%; display:block; height:100%;'>
 						<div style='width:90%; display:block; margin-left:auto; margin-right:auto; height:100%; position:relative;'>
 							<div style='display:inline-block; height:auto; margin:auto; position:absolute; bottom:0; left: 0; padding:10px;'>
-								<input placeholder="Search Members">
+								<p>Project Team</p>
+								<input placeholder="Search Members" (change)='filterEmployeeList($event.target.value)'>
 							</div>
 							<div style='display:inline-block; height:auto; margin:auto; position:absolute; bottom:0; right: 0; padding:10px;'>
+								<p style='text-align: center'>{{ employeeNumber }} Members</p>
 								<select (change)='sortEmployees($event.target.value)' ng-model="sortMethod">
 									<option value="-1"> Sort By... </option>
 									<option value="0"> Sort By First (Ascending) </option>
@@ -278,7 +286,7 @@
 					</div>
 				</div>
 				<div class='bottomRightSegment'>
-					<div class='employeeCard' *ngFor='let employee2 of projectEmployees, let i = index'>
+					<div class='employeeCard' *ngFor='let employee2 of filteredEmployees, let i = index'>
 						
 						<!-- Light Gray -->
 						<div style='height:100%;background-color:rgb(170,170,170); width:95%; margin:auto; padding-top:10px;' *ngIf='i % 2 == 0'>
@@ -286,21 +294,23 @@
 								<img src='https://teamlinkage.com/api/public/profiles/{{employee2.image_id}}' class='TeamConfig'>
 							</div>
 							
-							<div style='display:inline-block; height:100%; width:45%;vertical-align: middle;'>
+							<div style='display:inline-block; height:100%; width:35%;vertical-align: middle;'>
 									<div style='height:100%; width:50%; display:inline-block; text-align: center'>{{employee2.first_name}} {{employee2.last_name}}</div>
 									<div style='height:100%; width:50%; display:inline-block; text-align: center'>{{employee2.title}}</div>
 							</div>
 
-							<div style='display:inline-block;  width:15%; height:100%'>
-								<img (click)="toggleReview(employee2)" src='https://d30y9cdsu7xlg0.cloudfront.net/png/29338-200.png' class='TeamConfig'>
-							</div>
-
 							<div style='display:inline-block; width:15%; height:100%;'>
-								<img (click)="displayPhone(employee2)" src='https://png.icons8.com/metro/1600/phone.png' class='TeamConfig'>
+								<!-- <img (click)="displayPhone(employee2)" src='https://png.icons8.com/metro/1600/phone.png' class='TeamConfig'> -->
+								<span>{{employee2.phone_number}}</span>
+							</div>
+
+							<div style='display:inline-block;  width:25%; height:100%'>
+								<!-- <img (click)="displayEmail(employee2)" src='http://files.softicons.com/download/system-icons/windows-8-metro-invert-icons-by-dakirby309/ico/Other/Mail.ico' class='TeamConfig'> -->
+								<span>{{employee2.email}}</span>
 							</div>
 
 							<div style='display:inline-block;  width:15%; height:100%'>
-								<img (click)="displayEmail(employee2)" src='http://files.softicons.com/download/system-icons/windows-8-metro-invert-icons-by-dakirby309/ico/Other/Mail.ico' class='TeamConfig'>
+								<img (click)="toggleReview(employee2)" src='https://d30y9cdsu7xlg0.cloudfront.net/png/29338-200.png' style='width:40px;height:40px;margin: auto; display:block;'>
 							</div>
 						</div>
 						
@@ -310,21 +320,23 @@
 								<img src='https://teamlinkage.com/api/public/profiles/{{employee2.image_id}}' class='TeamConfig'> <span>{{employee2.image_id}}</span>
 							</div>
 							
-							<div style='display:inline-block; height:100%; width:45%;vertical-align: middle;'>
+							<div style='display:inline-block; height:100%; width:35%;vertical-align: middle;'>
 									<div style='height:100%; width:50%; display:inline-block; text-align: center'>{{employee2.first_name}} {{employee2.last_name}}</div>
 									<div style='height:100%; width:50%; display:inline-block; text-align: center'>{{employee2.title}}</div>
 							</div>
 
-							<div style='display:inline-block;  width:15%; height:100%'>
-								<img (click)="toggleReview(employee2)" src='https://d30y9cdsu7xlg0.cloudfront.net/png/29338-200.png' class='TeamConfig'>
-							</div>
-
 							<div style='display:inline-block; width:15%; height:100%;'>
-								<img (click)="displayPhone(employee2)" src='https://png.icons8.com/metro/1600/phone.png' class='TeamConfig'>
+								<!-- <img (click)="displayPhone(employee2)" src='https://png.icons8.com/metro/1600/phone.png' class='TeamConfig'> -->
+								<span>{{employee2.phone_number}}</span>
+							</div>
+
+							<div style='display:inline-block;  width:25%; height:100%'>
+								<!-- <img (click)="displayEmail(employee2)" src='http://files.softicons.com/download/system-icons/windows-8-metro-invert-icons-by-dakirby309/ico/Other/Mail.ico' class='TeamConfig'> -->
+								<span>{{employee2.email}}</span>
 							</div>
 
 							<div style='display:inline-block;  width:15%; height:100%'>
-								<img (click)="displayEmail(employee2)" src='http://files.softicons.com/download/system-icons/windows-8-metro-invert-icons-by-dakirby309/ico/Other/Mail.ico' class='TeamConfig'>
+								<img (click)="toggleReview(employee2)" src='https://d30y9cdsu7xlg0.cloudfront.net/png/29338-200.png' style='width:40px;height:40px;margin: auto; display:block;'>
 							</div>
 						</div>
 					</div>

@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
 
 	reviewCards: Array<object>;
 	projectEmployees: Array<object>;
+	filteredEmployees: Array<object>;
 	projects: Array<object>;
 	temp: Array<object>;
 
@@ -34,6 +35,7 @@ export class AppComponent implements OnInit {
 	currentReview: number;
 	currentProjectID: number;
 	projectAverage: number;
+	ratingCount: number;
 
 	employeeLoaded: boolean = false;
 	
@@ -61,12 +63,9 @@ export class AppComponent implements OnInit {
 
 		this.reviewCards = new Array<object>();
 		this.projectEmployees = new Array<object>();
+		this.filteredEmployees = new Array<object>();
 		this.projects = new Array<object>();
 		this.temp = new Array<object>();
-		for (var i = 0; i < 5; i++) {
-			this.temp.push({"a": i});
-		}
-
 		this.isAdmin = false;
 		this.isViewing = true;
 		this.sortMethod = 0;
@@ -74,8 +73,8 @@ export class AppComponent implements OnInit {
 		this.currentFeedback = "";
 		this.currentReview = 0;
 		this.currentProjectID = 0;
-		this.projectAverage = 4.5;
-		// this.constructReviewCard();
+		this.projectAverage = 3;
+		this.ratingCount = 0;
 	}
 
 	private checkWidth() {
@@ -109,21 +108,22 @@ export class AppComponent implements OnInit {
 			}
 			this.employeeNumber = this.projects[this.currentProject]['data']['employees'].length;
 		}
+		this.filteredEmployees = this.projectEmployees;
 	}
 
 	sortEmployees(val: string) {
 		switch (val) {
 			case('0'):
-				this.projectEmployees = this.projectEmployees.sort((q1, q2) => ((q1['first_name']) > (q2['first_name']) ? 1 : -1));
+				this.filteredEmployees = this.projectEmployees.sort((q1, q2) => ((q1['first_name']) > (q2['first_name']) ? 1 : -1));
 				break;
 			case('1'):
-				this.projectEmployees = this.projectEmployees.sort((q1, q2) => ((q1['first_name']) > (q2['first_name']) ? -1 : 1));
+				this.filteredEmployees = this.projectEmployees.sort((q1, q2) => ((q1['first_name']) > (q2['first_name']) ? -1 : 1));
 				break;
 			case('2'):
-				this.projectEmployees = this.projectEmployees.sort((q1, q2) => ((q1['last_name']) > (q2['last_name']) ? 1 : -1));
+				this.filteredEmployees = this.projectEmployees.sort((q1, q2) => ((q1['last_name']) > (q2['last_name']) ? 1 : -1));
 				break;
 			case('3'):
-				this.projectEmployees = this.projectEmployees.sort((q1, q2) => ((q1['last_name']) > (q2['last_name']) ? -1 : 1));
+				this.filteredEmployees = this.projectEmployees.sort((q1, q2) => ((q1['last_name']) > (q2['last_name']) ? -1 : 1));
 				break;
 		}
 	}
@@ -206,8 +206,9 @@ export class AppComponent implements OnInit {
 		});
 	}
 	
-	fetchEmployeePicture(image_id: string) {
-
+	filterEmployeeList(search: string){
+		this.filteredEmployees = this.projectEmployees;
+		this.filteredEmployees = this.filteredEmployees.filter((word) => word['first_name'].indexOf(search) >= 0);
 	}
 
 	displayPhone(emp: object) {
@@ -235,18 +236,22 @@ export class AppComponent implements OnInit {
 				this.projectAverage += +(val['ret'][i]['rating']);
 			}
 			this.projectAverage /= val['ret'].length;
+			this.ratingCount = val['ret'].length;
 		});
 	}
 
 	parseReview(obj: object): object {
 		var retObj: object;
+		console.log(obj);
 		retObj = {
 			'author' : obj['author'],
 			'recipient' : obj['recipient'],
 			'rating' : obj['rating'],
 			'feedback' : obj['comment'],
-			'editor' : obj['editor']
+			'editor' : obj['editor'],
+			'edited': obj['updatedAt']
 		};
+		retObj['edited'] = (retObj['edited'] as string).substr(0, 10);
 		return retObj;
 	}
 

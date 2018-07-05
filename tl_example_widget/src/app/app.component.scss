@@ -25,7 +25,7 @@
 		height:40%;
 		background-color:rgb(240,240,240);
 		outline-color: black;
-		outline-width: 1px;
+		outline-width: 0px;
 		outline-style: solid;
 	}
 	
@@ -34,7 +34,7 @@
 		height:60%;
 		overflow: auto;
 		outline-color: black;
-		outline-width: 1px;
+		outline-width: 0px;
 		outline-style: solid;
 	}
 
@@ -42,14 +42,14 @@
 		background-color:rgb(200,200,200);
 		height:35%;
 		outline-color: black;
-		outline-width: 1px;
+		outline-width: 0px;
 		outline-style: solid;
 	}
 	.midRightSegment{
 		background-color:rgb(150,150,150);
 		height:20%;
 		outline-color: black;
-		outline-width: 1px;
+		outline-width: 0px;
 		outline-style: solid;
 	}
 	.bottomRightSegment{
@@ -63,7 +63,7 @@
 	height:200px;
 	background-color:rgb(200,200,200);
 	outline-color: black;
-	outline-width: 1px;
+	outline-width: 0px;
 	outline-style: solid;
 	position: relative;
 }
@@ -119,8 +119,8 @@
 .TeamConfig{
 	display:block;
 	 margin:auto;
-	 width:60px;
-	 height:60px;
+	 width:40px;
+	 height:40px;
 	 border-radius: 50%;
 }
 
